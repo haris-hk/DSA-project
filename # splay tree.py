@@ -95,9 +95,9 @@ class SplayTree:
 
 # Usage
 monopoly_properties = [
-    ["GO", "Collect $200 salary as you pass"],
-    ["Park Place", "Cost: $350"],
-    ["Boardwalk", "Cost: $400"],
+    ["GO", 200 ],
+    ["Park Place", 350],
+    ["Boardwalk", 400],
     # Add more properties as needed
 ]
 
