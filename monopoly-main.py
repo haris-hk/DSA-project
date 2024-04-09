@@ -30,7 +30,7 @@ def delete_last_line():
   sys.stdout.write('\x1b[2K')
 
 # title + credit animation 
-typewrite("Welcome to " + Fore.LIGHTGREEN_EX+"Pythonopoly\n" + Fore.WHITE+"This game was created by " + Fore.BLUE+"haris-hk\n\n")
+# typewrite("Welcome to " + Fore.LIGHTGREEN_EX+"Monopoly\n" + Fore.WHITE+"This game was created by " + Fore.BLUE+"haris-hk\n\n")
 
 # list where players are added
 players=[]
@@ -164,7 +164,6 @@ while True:
         money[x]=money[x] + 50
         print("\n You won Thursday bingo and were awarded $50. In other news the senior citizens have been plotting your kidnapping.\n Your new balance is $ " + str(money[x]))
         
-      # print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Morgage(CURRENTLY UNAVAILABLE)\n(3)Check properties\n(4)End turn")
 
     # outcomes for landing on chance
     elif board[bPos[x]][1]=="ch":
@@ -226,17 +225,17 @@ while True:
           break
         # if input is invalid
         except:
-          print("ERROR! TRY AGAIN")
+          print("\nERROR! TRY AGAIN")
    
       # message for trying to buy a position that isn't a property 
       if wyd==1:
         if board[bPos[x]][1] == "no":
-          print("This cannot be bought!")
+          print("\nThis cannot be bought!")
 
         # message for trying to buy another players property
         elif board[bPos[x]][0] != available[bPos[x]]:
           print()
-          print("This property is currently owned by another player!")
+          print("\nThis property is currently owned by another player!")
 
         # if the property is unowned and less than your balance, player can purchase the property
         else:
@@ -244,21 +243,22 @@ while True:
             money[x]=money[x]-board[bPos[x]][1]
             own[x].append(available[bPos[x]])
             available[bPos[x]]= ""
-            print("Congratulations! You bought",board[bPos[x]][0])
+            print("\nCongratulations! You bought",board[bPos[x]][0])
           # message for if players balance is less than the property cost
           else:
-            print("Uh oh! You can't afford this!")
+            print("\nUh oh! You can't afford this!")
 
       # mortgage option for a property (not yet operational)
       elif wyd==2:
       # implementing Sell for $ option
         print("\nKindly select the number of the property you would like to sell? ")
         for i in range (len(own[x])):
-          print(str([i]) , str(own[x][i]))
+          print(str([i+1]) , str(own[x][i]))
         property_index = int(input(">> "))
+        property_index = property_index - 1
       # if the property is not in the players portfolio
         while own[x][property_index] not in own[x]:
-          print("This property is not in your portfolio. Please select a property from your portfolio.")
+          print("\nThis property is not in your portfolio. Please select a property from your portfolio.")
           property_index = int(input(">> "))
         property_to_be_sold = own[x][property_index]
       # if the property is in the players portfolio
@@ -278,12 +278,12 @@ while True:
 
       # checking real estate portfolio option 
       elif wyd==3:
-        print("You real estate portfolio includes: ",own[x])
+        print("\nYou real estate portfolio includes: ",own[x])
 
       # function for ending turn
       else:
         choice = 4
-        print("Ending turn...")
+        print("\nEnding turn...")
         break
           
         
