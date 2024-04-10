@@ -3,7 +3,7 @@ import splay_tree.py
 from colorama import Fore
 import sys,time
 import random
-import os
+
 
 # typing speed functions for animation
 def sprint(str):

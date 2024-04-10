@@ -98,20 +98,45 @@ class SplayTree:
             node.value = new_value
             return True
         return False
+    def increase_visited(self, key):
+        node = self.search(key)
+        node.value = int(node.value*1.5)
+        x = node.left
+        if x:
+            x.value = int(x.value*1.5)
+        y = node.right
+        if y:
+            y.value =int(y.value*1.5)
+
+    def in_order_traversal(self, node, leaf_nodes):
+        if node:
+            self.in_order_traversal(node.left, leaf_nodes)
+            if node.left is None and node.right is None:
+                leaf_nodes.append(node)
+            self.in_order_traversal(node.right, leaf_nodes)
+
+    def get_least_searched(self):
+        leaf_nodes = []
+        self.in_order_traversal(self.root, leaf_nodes)
+        return [node.key for node in leaf_nodes]
+    
+            
 
 # Usage
-monopoly_properties = [
-    ["GO", 200 ],
-    ["Park Place", 350],
-    ["Boardwalk", 400],
-    # Add more properties as needed
-]
+monopoly_properties = [["GO","no"],["Shoreline Pass",60],["Community Chest","cc"],["Trailhawk Lane",60],["Income Tax","no"],["Queens Crown Station",200],["Creighton Plaza",100],["CHANCE","ch"],["Tuscan Road",100],["Dreamville Lane",120],["Just Visiting","no"],["Grand View Mall",140],["Electric Company",150],["Pismo Court",140],["Swanson Avenue",160],["Kanto Station",200],["Morales Street",180],["COMMUNITY CHEST","cc"],["Palace Vinyard",180],["Cynthia Street",200],["Free Parking","no"],["Strand",220],["CHANCE","ch"],["Trojan Road",220],["Tralfamadore Square",240],["Spain Street Station",200],["John London Square",260],["Curry Street",260],["Water Works",150],["Tilted Towers",280],["Go To Jail","no"],["Berkeley Lane",300],["Lombard Street",300],["Community Chest","cc"],["Telegraph Avenue Station",200],["CHANCE","ch"],["Rocky Reels",350],["Super Tax","no"],["Palm Springs",400]]
 
 tree = SplayTree()
 for key, value in monopoly_properties:
     tree.insert(key, value)
     
 
-print(tree.search("Park Place").value)  # Output: 350
-print(tree.update_value("Park Place", int(375)))  # Output: True
-print(tree.search("Park Place").value)  # Output: 375
+print(tree.search("Shoreline Pass").left.key)  # Rocky Reels
+z = tree.search("Creighton Plaza")
+tree.search("Kanto Station").key  # Kanto Station
+tree.search("CHANCE").key  # CHANCE
+print(tree.search("Creighton Plaza").key)  # Community Chest
+print(tree.increase_visited("Shoreline Pass"))  # Output: None
+print(tree.search("Shoreline Pass").value)  # Output: 90
+print(tree.get_least_searched())  # Output: ['CHANCE', 'Community Chest', 'Creighton Plaza', 'Dreamville Lane', 'Income Tax', 'Kanto Station', 'Morales Street', 'Queens Crown Station', 'Strand', 'Swanson Avenue', 'Trailhawk Lane', 'Trojan Road']
+
+#! except chance and community chest, all other properties will splay to the root after being searched
