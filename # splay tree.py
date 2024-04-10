@@ -90,8 +90,14 @@ class SplayTree:
                 x = x.right
             else:
                 self.splay(x)
-                return x.value
+                return x
         return None
+    def update_value(self, key, new_value):
+        node = self.search(key)
+        if node:
+            node.value = new_value
+            return True
+        return False
 
 # Usage
 monopoly_properties = [
@@ -104,5 +110,8 @@ monopoly_properties = [
 tree = SplayTree()
 for key, value in monopoly_properties:
     tree.insert(key, value)
+    
 
-print(tree.search("Park Place"))  # Output: Cost: $350
+print(tree.search("Park Place").value)  # Output: 350
+print(tree.update_value("Park Place", int(375)))  # Output: True
+print(tree.search("Park Place").value)  # Output: 375
