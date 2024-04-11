@@ -101,19 +101,26 @@ class SplayTree:
     
     def increase_visited(self, key):
         node = self.search(key)
-        node.value = int(node.value*1.5)
-        x = node.left
-        if x:
-            x.value = int(x.value*1.5)
-        y = node.right
-        if y:
-            y.value =int(y.value*1.5)
+        if node.value in ["cc", "no", "ch"]:
+            return
+        else:
+            node.value = int(int(node.value)*1.5)
+            x = node.left
+            if x.value in ["cc", "no", "ch"]:
+                return
+            else:
+                x.value = int(int(x.value)*1.5)
+            y = node.right
+            if y.value in ["cc", "no", "ch"]:
+                return
+            else:
+                y.value =int(int(y.value)*1.5)
 
     def decrease_visited(self):
         nodelst = tree.get_least_searched()
         for node in nodelst:
             x = self.search(node)
-            x.value = x.value*0.85
+            x.value = int(x.value)*0.85
             print(x.key, x.value)
             
 
@@ -146,8 +153,8 @@ for key, value in monopoly_properties:
 # tree.search("Kanto Station").key  # Kanto Station
 # tree.search("CHANCE").key  # CHANCE
 # print(tree.search("Creighton Plaza").key)  # Community Chest
-# print(tree.increase_visited("Shoreline Pass"))  # Output: None
-# print(tree.search("Shoreline Pass").value)  # Output: 90
+# print(tree.increase_visited("Swanson Avenue"))  # Output: None
+# print(tree.search("Swanson Avenue").value)  # Output: 90
 # print(tree.get_least_searched())  # Output: ['Creighton Plaza', 'Dreamville Lane', 'Income Tax', 'Kanto Station', 'Morales Street', 'Queens Crown Station', 'Strand', 'Swanson Avenue', 'Trailhawk Lane', 'Trojan Road']
 
 #! except chance and community chest, all other properties will splay to the root after being searched

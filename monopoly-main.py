@@ -84,7 +84,7 @@ board=[["GO","no"],["Shoreline Pass",60],["Community Chest","cc"],["Trailhawk La
 
 
 # showing what is available
-available=["GO","Shoreline Pass","Community Chest","Trailhawk Lane","Income Tax","Queens Crown Station","Creighton Plaza","CHANCE","Tuscan Road","Dreamville Lane","Just Visiting","Grand View Mall","Electric Company","Pismo Court","Swanson Avenue","Kanto Station","Morales Street","COMMUNITY CHEST","Palace Vinyard","Cynthia Street","Free Parking","Strand","CHANCE","Trojan Road","Tralfamadore Square","Spain Street Station","John London Square","Curry Street","Water Works","Tilted Towers","Go To Jail","Berkeley Lane","Lombard Street","Community Chest","Telegraph Avenue Station","CHANCE","Rocky Reels","Palm Springs"]
+available=["GO","Shoreline Pass","Community Chest","Trailhawk Lane","Income Tax","Queens Crown Station","Creighton Plaza","CHANCE","Tuscan Road","Dreamville Lane","Just Visiting","Grand View Mall","Electric Company","Pismo Court","Swanson Avenue","Kanto Station","Morales Street","COMMUNITY CHEST","Palace Vinyard","Cynthia Street","Free Parking","Strand","CHANCE","Trojan Road","Tralfamadore Square","Spain Street Station","John London Square","Curry Street","Water Works","Tilted Towers","Go To Jail","Berkeley Lane","Lombard Street","Telegraph Avenue Station","Rocky Reels","Palm Springs", "CHANCE"]
 
 # each players starting board position 
 bPos=[0,0,0,0,0,0,0,0]
@@ -128,17 +128,18 @@ while True:
     # print("\nPlayer" + ":",players[x])
     # print("Balance: $",money[x])
     # print("You landed on",board[bPos[x]][0])
-
-    last_visited = board[bPos[x]][0]
+    if board[bPos[x]][1] not in ["cc", "no", "ch"]:
+      last_visited = board[bPos[x]][0]
+      print("Last visited: ", last_visited)
 
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
       # if board[bPos[x]][1]=="no":
 
       # checks to see if the property the player landed on is available, and then to see if that player owns it. If they don't rent is subtracted fromt that players balance.
 
-    if board[bPos[x]][0] != available[bPos[x]]:
+    if board[bPos[x]][0] not in available[bPos[x]]: #! Palm Springs Error: IndexError: list index out of range
       if board[bPos[x]][0] not in own[x]:
-        rent_owed = tree.search(board[bPos[x]][0]).value  #! rent price fix required here
+        rent_owed = tree.search(board[bPos[x]][0]).value 
         money[x] = money[x] - rent_owed
         for i in range(len(own)):
           if board[bPos[x]][0] in own[i]:
@@ -230,7 +231,7 @@ while True:
       elif available[bPos[x]] == "":
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")         
       else :
-                print("\nwhat would you like to do?\n(1)Buy for $",board[bPos[x]][1],"\n(2)Sell for $\n(3)Check properties\n(4)End turn")
+                print("\nwhat would you like to do?\n(1)Buy for $",tree.search(board[bPos[x]][0]).value,"\n(2)Sell for $\n(3)Check properties\n(4)End turn")
       while True:
         try:
           wyd=int(input(">> "))
@@ -251,8 +252,8 @@ while True:
 
         # if the property is unowned and less than your balance, player can purchase the property
         else:
-          if money[x] >= board[bPos[x]][1]:
-            money[x]=money[x]-board[bPos[x]][1]
+          if money[x] >= tree.search(board[bPos[x]][0]).value:
+            money[x]=money[x]-tree.search(board[bPos[x]][0]).value
             own[x].append(available[bPos[x]])
             available[bPos[x]]= ""
             print("\nCongratulations! You bought",board[bPos[x]][0])
@@ -263,26 +264,30 @@ while True:
       # mortgage option for a property (not yet operational)
       elif wyd==2:
       # implementing Sell for $ option
-        print("\nKindly select the number of the property you would like to sell? ")
-        for i in range (len(own[x])):
-          print(str([i+1]) , str(own[x][i]))
-        property_index = int(input(">> "))
-        property_index = property_index - 1
-      # if the property is not in the players portfolio
-        while own[x][property_index] not in own[x]:
-          print("\nThis property is not in your portfolio. Please select a property from your portfolio.")
+        if len(own[x]) == 0:
+          print("\nYou don't have any properties to sell.")
+          continue
+        else:
+          print("\nKindly select the number of the property you would like to sell? ")
+          for i in range (len(own[x])):
+            print(str([i+1]) , str(own[x][i]))
           property_index = int(input(">> "))
-        property_to_be_sold = own[x][property_index]
-      # if the property is in the players portfolio
-      # Selling the property and adding the money to the players balance
-        for j in range(len(board)):
-           if property_to_be_sold == board[j][0]:
-             money[x] = money[x] + board[j][1]
-             own[x].remove(property_to_be_sold)
-             available[j] = property_to_be_sold
-             # printing a statement to confirm the sale of the property
-             print("You have successfully sold", property_to_be_sold, "for $", board[j][1])
-             break
+          property_index = abs(property_index - 1)
+        # if the property is not in the players portfolio
+          while own[x][property_index] not in own[x]:
+            print("\nThis property is not in your portfolio. Please select a property from your portfolio.")
+            property_index = int(input(">> "))
+          property_to_be_sold = own[x][property_index]
+        # if the property is in the players portfolio
+        # Selling the property and adding the money to the players balance
+          for j in range(len(board)):
+            if property_to_be_sold == board[j][0]:
+              money[x] = money[x] + board[j][1]
+              own[x].remove(property_to_be_sold)
+              available[j] = property_to_be_sold
+              # printing a statement to confirm the sale of the property
+              print("You have successfully sold", property_to_be_sold, "for $", board[j][1])
+              break
              
         
         
