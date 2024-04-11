@@ -40,30 +40,30 @@ players=[]
 # retrieving all players information and assigning them a color
 while True:
   try:
-    numOfPlayers=int(input(Fore.WHITE+"How many players will be playing Pythonopoly today?: "))
+    numOfPlayers=int(input(Fore.WHITE+"\nHow many players will be playing Dymonopoly today?: "))
     if numOfPlayers>=2 and numOfPlayers<=8:
       if numOfPlayers >=2:
-        p1=input(Fore.WHITE+"Player 1: "+Fore.LIGHTYELLOW_EX)
+        p1=input(Fore.WHITE+"\nPlayer 1: "+Fore.LIGHTYELLOW_EX)
         players.append(Fore.LIGHTYELLOW_EX+p1)
-        p2=input(Fore.WHITE+"Player 2: "+Fore.CYAN)
+        p2=input(Fore.WHITE+"\nPlayer 2: "+Fore.CYAN)
         players.append(Fore.CYAN+p2)
       if numOfPlayers >=3:
-        p3=input(Fore.WHITE+"Player 3: "+Fore.RED)
+        p3=input(Fore.WHITE+"\nPlayer 3: "+Fore.RED)
         players.append(Fore.RED+p3)
       if numOfPlayers >=4:
-        p4=input(Fore.WHITE+"Player 4: "+Fore.GREEN)
+        p4=input(Fore.WHITE+"\nPlayer 4: "+Fore.GREEN)
         players.append(Fore.GREEN+p4)
       if numOfPlayers >=5:
-        p5=input(Fore.WHITE+"Player 5: "+Fore.MAGENTA)
+        p5=input(Fore.WHITE+"\nPlayer 5: "+Fore.MAGENTA)
         players.append(Fore.MAGENTA+p5)
       if numOfPlayers >=6:
-        p6=input(Fore.WHITE+"Player 6: "+Fore.WHITE)
+        p6=input(Fore.WHITE+"\nPlayer 6: "+Fore.WHITE)
         players.append(Fore.WHITE+p6)
       if numOfPlayers >=7:
-        p7=input(Fore.WHITE+"Player 7: "+Fore.BLACK)
+        p7=input(Fore.WHITE+"\nPlayer 7: "+Fore.BLACK)
         players.append(Fore.BLACK+p7)
       if numOfPlayers ==8:
-        p8=input(Fore.WHITE+"Player 8: "+Fore.YELLOW)
+        p8=input(Fore.WHITE+"\nPlayer 8: "+Fore.YELLOW)
         players.append(Fore.YELLOW+p8)
       break
 
@@ -101,13 +101,16 @@ while True:
   iterations += 1
 
   if iterations % numOfPlayers == 0:
+    print("\nPrice Update: \n")
+    print(Fore.GREEN+"Increase in property value for the following: \n")
     tree.increase_visited(last_visited)
+    print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
     tree.decrease_visited()
 
   for x in range(numOfPlayers):
     # print("player num",x)
     # os.system("clear")
-    input(Fore.WHITE+"Click <ENTER> to begin your go... ")
+    input(Fore.WHITE+"\nClick <ENTER> to begin your go... ")
     bPos[x]=random.randint(1,6)+random.randint(1,6)+bPos[x]
     if bPos[x] >= 39:
       bPos[x]=bPos[x]-39
@@ -131,13 +134,16 @@ while True:
     if board[bPos[x]][1] not in ["cc", "no", "ch"]:
       last_visited = board[bPos[x]][0]
       print("Last visited: ", last_visited)
+    else:
+       last_visited = "GO"
 
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
       # if board[bPos[x]][1]=="no":
 
       # checks to see if the property the player landed on is available, and then to see if that player owns it. If they don't rent is subtracted fromt that players balance.
-
-    if board[bPos[x]][0] not in available: #! Palm Springs Error: IndexError: list index out of range
+    print(board[bPos[x]][0])
+    if board[bPos[x]][0] not in available: 
+      print("\nPlayer" + ":",players[x], "landed on",board[bPos[x]][0])
       if board[bPos[x]][0] not in own[x]:
         rent_owed = tree.search(board[bPos[x]][0]).value 
         money[x] = money[x] - rent_owed
@@ -228,7 +234,7 @@ while True:
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")
       elif board[bPos[x]][1]=="ch":
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")
-      elif available[bPos[x]] == "":
+      elif board[bPos[x]][0] not in available:
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")         
       else :
                 print("\nwhat would you like to do?\n(1)Buy for $",tree.search(board[bPos[x]][0]).value,"\n(2)Sell for $\n(3)Check properties\n(4)End turn")
@@ -246,7 +252,7 @@ while True:
           print("\nThis cannot be bought!")
 
         # message for trying to buy another players property
-        elif board[bPos[x]][0] != available[bPos[x]]:
+        elif board[bPos[x]][0] not in available:
           print()
           print("\nThis property is currently owned by another player!")
 
@@ -254,8 +260,8 @@ while True:
         else:
           if money[x] >= tree.search(board[bPos[x]][0]).value:
             money[x]=money[x]-tree.search(board[bPos[x]][0]).value
-            own[x].append(available[bPos[x]])
-            available[bPos[x]]= ""
+            own[x].append(board[bPos[x]][0])
+            available.remove(board[bPos[x]][0])
             print("\nCongratulations! You bought",board[bPos[x]][0])
           # message for if players balance is less than the property cost
           else:
@@ -284,7 +290,7 @@ while True:
             if property_to_be_sold == board[j][0]:
               money[x] = money[x] + board[j][1]
               own[x].remove(property_to_be_sold)
-              available[j] = property_to_be_sold
+              available.append(property_to_be_sold)
               # printing a statement to confirm the sale of the property
               print("You have successfully sold", property_to_be_sold, "for $", board[j][1])
               break

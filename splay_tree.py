@@ -105,16 +105,19 @@ class SplayTree:
             return
         else:
             node.value = int(int(node.value)*1.5)
+            print(node.key, node.value)
             x = node.left
             if x.value in ["cc", "no", "ch"]:
                 return
             else:
                 x.value = int(int(x.value)*1.5)
+                print(x.key , x.value)
             y = node.right
             if y.value in ["cc", "no", "ch"]:
                 return
             else:
                 y.value =int(int(y.value)*1.5)
+                print(y.key, y.value)
 
     def decrease_visited(self):
         nodelst = tree.get_least_searched()
