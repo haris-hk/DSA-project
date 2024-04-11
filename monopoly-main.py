@@ -84,7 +84,7 @@ board=[["GO","no"],["Shoreline Pass",60],["Community Chest","cc"],["Trailhawk La
 
 
 # showing what is available
-available=["GO","Shoreline Pass","Community Chest","Trailhawk Lane","Income Tax","Queens Crown Station","Creighton Plaza","CHANCE","Tuscan Road","Dreamville Lane","Just Visiting","Grand View Mall","Electric Company","Pismo Court","Swanson Avenue","Kanto Station","Morales Street","COMMUNITY CHEST","Palace Vinyard","Cynthia Street","Free Parking","Strand","CHANCE","Trojan Road","Tralfamadore Square","Spain Street Station","John London Square","Curry Street","Water Works","Tilted Towers","Go To Jail","Berkeley Lane","Lombard Street","Telegraph Avenue Station","Rocky Reels","Palm Springs", "CHANCE"]
+available=["GO","Shoreline Pass","Community Chest","Trailhawk Lane","Palm Springs","Income Tax","Queens Crown Station","Creighton Plaza","CHANCE","Tuscan Road","Dreamville Lane","Just Visiting","Grand View Mall","Electric Company","Pismo Court","Swanson Avenue","Kanto Station","Morales Street","COMMUNITY CHEST","Palace Vinyard","Cynthia Street","Free Parking","Strand","CHANCE","Trojan Road","Tralfamadore Square","Spain Street Station","John London Square","Curry Street","Water Works","Tilted Towers","Go To Jail","Berkeley Lane","Lombard Street","Telegraph Avenue Station","Rocky Reels", "CHANCE"]
 
 # each players starting board position 
 bPos=[0,0,0,0,0,0,0,0]
@@ -137,7 +137,7 @@ while True:
 
       # checks to see if the property the player landed on is available, and then to see if that player owns it. If they don't rent is subtracted fromt that players balance.
 
-    if board[bPos[x]][0] not in available[bPos[x]]: #! Palm Springs Error: IndexError: list index out of range
+    if board[bPos[x]][0] not in available: #! Palm Springs Error: IndexError: list index out of range
       if board[bPos[x]][0] not in own[x]:
         rent_owed = tree.search(board[bPos[x]][0]).value 
         money[x] = money[x] - rent_owed
