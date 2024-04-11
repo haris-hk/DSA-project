@@ -1,8 +1,8 @@
-import splay_tree.py
 #import libraries
 from colorama import Fore
 import sys,time
 import random
+from splay_tree import *
 
 
 # typing speed functions for animation
@@ -34,6 +34,8 @@ def delete_last_line():
 
 # list where players are added
 players=[]
+
+
 
 # retrieving all players information and assigning them a color
 while True:
@@ -80,6 +82,7 @@ while True:
   # 2D board list 
 board=[["GO","no"],["Shoreline Pass",60],["Community Chest","cc"],["Trailhawk Lane",60],["Income Tax","no"],["Queens Crown Station",200],["Creighton Plaza",100],["CHANCE","ch"],["Tuscan Road",100],["Dreamville Lane",120],["Just Visiting","no"],["Grand View Mall",140],["Electric Company",150],["Pismo Court",140],["Swanson Avenue",160],["Kanto Station",200],["Morales Street",180],["COMMUNITY CHEST","cc"],["Palace Vinyard",180],["Cynthia Street",200],["Free Parking","no"],["Strand",220],["CHANCE","ch"],["Trojan Road",220],["Tralfamadore Square",240],["Spain Street Station",200],["John London Square",260],["Curry Street",260],["Water Works",150],["Tilted Towers",280],["Go To Jail","no"],["Berkeley Lane",300],["Lombard Street",300],["Community Chest","cc"],["Telegraph Avenue Station",200],["CHANCE","ch"],["Rocky Reels",350],["Super Tax","no"],["Palm Springs",400]]
 
+
 # showing what is available
 available=["GO","Shoreline Pass","Community Chest","Trailhawk Lane","Income Tax","Queens Crown Station","Creighton Plaza","CHANCE","Tuscan Road","Dreamville Lane","Just Visiting","Grand View Mall","Electric Company","Pismo Court","Swanson Avenue","Kanto Station","Morales Street","COMMUNITY CHEST","Palace Vinyard","Cynthia Street","Free Parking","Strand","CHANCE","Trojan Road","Tralfamadore Square","Spain Street Station","John London Square","Curry Street","Water Works","Tilted Towers","Go To Jail","Berkeley Lane","Lombard Street","Community Chest","Telegraph Avenue Station","CHANCE","Rocky Reels","Palm Springs"]
 
@@ -92,8 +95,15 @@ own=[[],[],[],[],[],[],[],[]]
 # balance of each player
 money=[1500,1500,1500,1500,1500,1500,1500,1500]
 
+iterations = 0
 # starting dice roll and sending current player to their rolled position
 while True:
+  iterations += 1
+
+  if iterations % numOfPlayers == 0:
+    tree.increase_visited(last_visited)
+    tree.decrease_visited()
+
   for x in range(numOfPlayers):
     # print("player num",x)
     # os.system("clear")
@@ -119,14 +129,16 @@ while True:
     # print("Balance: $",money[x])
     # print("You landed on",board[bPos[x]][0])
 
+    last_visited = board[bPos[x]][0]
+
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
       # if board[bPos[x]][1]=="no":
-      #   print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Morgage(CURRENTLY UNAVAILABLE)\n(3)Check properties\n(4)End turn")
 
       # checks to see if the property the player landed on is available, and then to see if that player owns it. If they don't rent is subtracted fromt that players balance.
+
     if board[bPos[x]][0] != available[bPos[x]]:
       if board[bPos[x]][0] not in own[x]:
-        rent_owed = board[bPos[x]][1] #! rent price fix required here
+        rent_owed = tree.search(board[bPos[x]][0]).value  #! rent price fix required here
         money[x] = money[x] - rent_owed
         for i in range(len(own)):
           if board[bPos[x]][0] in own[i]:
@@ -207,7 +219,7 @@ while True:
     while choice != 4:   
       print("\nPlayer" + ":",players[x])
       print("Balance: $",money[x])
-      print("You landed on",board[bPos[x]][0])
+      print("You landed on",tree.search(board[bPos[x]][0]).key)
       time.sleep(1)
       if board[bPos[x]][1]=="no":
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")

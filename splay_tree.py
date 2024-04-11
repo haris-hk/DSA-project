@@ -98,6 +98,7 @@ class SplayTree:
             node.value = new_value
             return True
         return False
+    
     def increase_visited(self, key):
         node = self.search(key)
         node.value = int(node.value*1.5)
@@ -107,6 +108,14 @@ class SplayTree:
         y = node.right
         if y:
             y.value =int(y.value*1.5)
+
+    def decrease_visited(self):
+        nodelst = tree.get_least_searched()
+        for node in nodelst:
+            x = self.search(node)
+            x.value = x.value*0.85
+            print(x.key, x.value)
+            
 
     def in_order_traversal(self, node, leaf_nodes):
         if node:
@@ -118,7 +127,8 @@ class SplayTree:
     def get_least_searched(self):
         leaf_nodes = []
         self.in_order_traversal(self.root, leaf_nodes)
-        return [node.key for node in leaf_nodes]
+        return [node.key for node in leaf_nodes if node.value not in ["cc", "no", "ch"]]
+    
     
             
 
@@ -129,14 +139,15 @@ tree = SplayTree()
 for key, value in monopoly_properties:
     tree.insert(key, value)
     
-
-print(tree.search("Shoreline Pass").left.key)  # Rocky Reels
-z = tree.search("Creighton Plaza")
-tree.search("Kanto Station").key  # Kanto Station
-tree.search("CHANCE").key  # CHANCE
-print(tree.search("Creighton Plaza").key)  # Community Chest
-print(tree.increase_visited("Shoreline Pass"))  # Output: None
-print(tree.search("Shoreline Pass").value)  # Output: 90
-print(tree.get_least_searched())  # Output: ['CHANCE', 'Community Chest', 'Creighton Plaza', 'Dreamville Lane', 'Income Tax', 'Kanto Station', 'Morales Street', 'Queens Crown Station', 'Strand', 'Swanson Avenue', 'Trailhawk Lane', 'Trojan Road']
+    
+# print(tree.decrease_visited())
+# print(tree.search("Shoreline Pass").key) 
+# z = tree.search("Creighton Plaza")
+# tree.search("Kanto Station").key  # Kanto Station
+# tree.search("CHANCE").key  # CHANCE
+# print(tree.search("Creighton Plaza").key)  # Community Chest
+# print(tree.increase_visited("Shoreline Pass"))  # Output: None
+# print(tree.search("Shoreline Pass").value)  # Output: 90
+# print(tree.get_least_searched())  # Output: ['Creighton Plaza', 'Dreamville Lane', 'Income Tax', 'Kanto Station', 'Morales Street', 'Queens Crown Station', 'Strand', 'Swanson Avenue', 'Trailhawk Lane', 'Trojan Road']
 
 #! except chance and community chest, all other properties will splay to the root after being searched
