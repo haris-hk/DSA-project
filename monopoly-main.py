@@ -111,7 +111,10 @@ while True:
     # print("player num",x)
     # os.system("clear")
     input(Fore.WHITE+"\nClick <ENTER> to begin your go... ")
-    bPos[x]=random.randint(1,6)+random.randint(1,6)+bPos[x]
+    if jail == False:
+      bPos[x]=random.randint(1,6)+random.randint(1,6)+bPos[x]
+    else:
+      bPos[x] = bPos[x]
     if bPos[x] >= 39:
       bPos[x]=bPos[x]-39
     # os.system("clear")
@@ -133,12 +136,46 @@ while True:
     # print("You landed on",board[bPos[x]][0])
     if board[bPos[x]][1] not in ["cc", "no", "ch"]:
       last_visited = board[bPos[x]][0]
-      print("Last visited: ", last_visited)
     else:
        last_visited = "GO"
-
+    jail = False
+    jail_time = 0
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
-      # if board[bPos[x]][1]=="no":
+    if board[bPos[x]][0]=="Inome Tax":
+      print("\nPlayer" + ":",players[x], "landed on",board[bPos[x]][0])
+      money[x]=money[x]-200
+      print("\nYou paid $200 in income tax.\nYour new balance is $" + str(money[x]))
+    elif board[bPos[x]][0]=="Super Tax":
+      print("\nPlayer" + ":",players[x], "landed on",board[bPos[x]][0])
+      money[x]=money[x]-400 
+      print("\nYou paid $400 in Super tax.\nYour new balance is $" + str(money[x]))
+    elif board[bPos[x]][0]=="GO":
+      print("You passed GO! Collect $200!")
+      money[x]=money[x]+200
+      print("\nYour new balance is $" + str(money[x]))
+    elif board[bPos[x]][0]=="Go To Jail":
+      jail = True
+      print("\nYou have been sent to jail!")
+      while jail_time < 4:
+        print("\nYou are in jail for " + str(3 - jail_time) + " turns.")
+        print("\nYou can either pay $100 to get out of jail or wait for your turn.")
+        print("\nWhat would you like to do?\n(1)Pay $100\n(2)Wait")
+        jail_choice = int(input(">> "))
+        if jail_choice == 1:
+          money[x] = money[x] - 100
+          print("\nYou paid $100 to get out of jail.\nYour new balance is $" + str(money[x]))
+          jail = False
+          break
+        elif jail_time == 3:
+          print("You have served your time in jail. You are free to go.")
+          jail = False
+          break
+        elif jail_choice == 2 and jail_time < 2:
+          jail_time += 1
+          print("\nYou are still in jail.")
+          jail = True
+          break
+
 
       # checks to see if the property the player landed on is available, and then to see if that player owns it. If they don't rent is subtracted fromt that players balance.
     print(board[bPos[x]][0])
