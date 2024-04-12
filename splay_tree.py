@@ -101,19 +101,19 @@ class SplayTree:
     
     def increase_visited(self, key):
         node = self.search(key)
-        if node.value in ["cc", "no", "ch"]:
+        if node.value in ["cc", "no", "ch", None]:
             return
         else:
             node.value = int(int(node.value)*1.5)
             print(node.key, node.value)
             x = node.left
-            if x.value in ["cc", "no", "ch"]:
+            if x.value in ["cc", "no", "ch"], None:
                 return
             else:
                 x.value = int(int(x.value)*1.5)
                 print(x.key , x.value)
             y = node.right
-            if y.value in ["cc", "no", "ch"]:
+            if y.value in ["cc", "no", "ch", None]:
                 return
             else:
                 y.value =int(int(y.value)*1.5)
@@ -137,7 +137,7 @@ class SplayTree:
     def get_least_searched(self):
         leaf_nodes = []
         self.in_order_traversal(self.root, leaf_nodes)
-        return [node.key for node in leaf_nodes if node.value not in ["cc", "no", "ch"]]
+        return [node.key for node in leaf_nodes if node.value not in ["cc", "no", "ch", None]]
     
     
             
