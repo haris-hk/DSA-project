@@ -98,6 +98,7 @@ money=[1500,1500,1500,1500,1500,1500,1500,1500]
 iterations = 0
 # starting dice roll and sending current player to their rolled position
 while True:
+  jail = False
   iterations += 1
 
   if iterations % numOfPlayers == 0:
@@ -138,7 +139,6 @@ while True:
       last_visited = board[bPos[x]][0]
     else:
        last_visited = "GO"
-    jail = False
     jail_time = 0
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
     if board[bPos[x]][0]=="Inome Tax":
@@ -153,7 +153,7 @@ while True:
       print("You passed GO! Collect $200!")
       money[x]=money[x]+200
       print("\nYour new balance is $" + str(money[x]))
-    elif board[bPos[x]][0]=="Go To Jail":
+    elif board[bPos[x]][0]=="Go To Jail" and "Get out of Jail Free Card" not in own[x]:
       jail = True
       print("\nYou have been sent to jail!")
       while jail_time < 4:
@@ -178,9 +178,7 @@ while True:
 
 
       # checks to see if the property the player landed on is available, and then to see if that player owns it. If they don't rent is subtracted fromt that players balance.
-    print(board[bPos[x]][0])
     if board[bPos[x]][0] not in available: 
-      print("\nPlayer" + ":",players[x], "landed on",board[bPos[x]][0])
       if board[bPos[x]][0] not in own[x]:
         rent_owed = tree.search(board[bPos[x]][0]).value 
         money[x] = money[x] - rent_owed
@@ -188,7 +186,8 @@ while True:
           if board[bPos[x]][0] in own[i]:
             money[i] = money[i] + rent_owed
         print("\nUnfortunately",board[bPos[x]][0] + " is owned by another player. You paid $" + str(rent_owed) + " in rent.\nYour new balance is $" + str(money[x]))
-      # print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Morgage(CURRENTLY UNAVAILABLE)\n(3)Check properties\n(4)End turn")
+      else: 
+         print("\nYou own this property!")
 
     # outcomes for landing on community chest
     elif board[bPos[x]][1]=="cc":
@@ -204,13 +203,8 @@ while True:
         print("\nYou received $200 for your birthday! Your grandma tells you not to spend it on alcohol.\n Your new balance is $" + str(money[x]))
         
       elif cc_spin == 3:
-        lottery = random.randint(1,100)
-        guess = int(("\n You received a lottery ticket. Guess the correct number <1 - 100> to win $1,000,000!: "))
-        if lottery == guess:
-          money[x]=money[x] + 1000000
-          print("WOW! You actually won the lottery!\nYour new balance is $" + str(money[x]))
-        else:
-          print("Sorry. The correct number was " + str(lottery))
+        print("\n You received Get Out of Jail Free Card! You can use this card to get out of jail for free.")
+        own[x].append("Get out of Jail Free Card")
           
       elif cc_spin == 4:
         money[x]=money[x] + 500
@@ -313,9 +307,17 @@ while True:
         else:
           print("\nKindly select the number of the property you would like to sell? ")
           for i in range (len(own[x])):
-            print(str([i+1]) , str(own[x][i]))
+            print(str([i+1]) , str(own[x][i]), str(tree.search(own[x][i]).value)) #TODO: Traverse to find value instead of searching
+          if "Get out of Jail Free Card" in own[x]:
+            print(str([len(own[x])]), "Get out of Jail Free Card" , str(200))
+          print(str([-1]), "Exit")
           property_index = int(input(">> "))
-          property_index = abs(property_index - 1)
+          if property_index == -1:
+            continue
+          else:
+            property_index = abs(property_index - 1)
+
+
         # if the property is not in the players portfolio
           while own[x][property_index] not in own[x]:
             print("\nThis property is not in your portfolio. Please select a property from your portfolio.")
