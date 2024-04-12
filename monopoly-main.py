@@ -307,12 +307,22 @@ while True:
         else:
           print("\nKindly select the number of the property you would like to sell? ")
           for i in range (len(own[x])):
-            print(str([i+1]) , str(own[x][i]), str(tree.search(own[x][i]).value)) #TODO: Traverse to find value instead of searching
+            if own[x][i] != "Get out of Jail Free Card":
+              print(str([i+1]) , str(own[x][i]), str(tree.search(own[x][i]).value)) #TODO: Traverse to find value instead of searching
+            else:
+              continue
           if "Get out of Jail Free Card" in own[x]:
             print(str([len(own[x])]), "Get out of Jail Free Card" , str(200))
+          
           print(str([-1]), "Exit")
           property_index = int(input(">> "))
+
           if property_index == -1:
+            continue
+          elif property_index == len(own[x]):
+            money[x] = money[x] + 200
+            own[x].remove("Get out of Jail Free Card")
+            print("You have successfully sold Get out of Jail Free Card for $200")
             continue
           else:
             property_index = abs(property_index - 1)
