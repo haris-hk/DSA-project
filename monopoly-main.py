@@ -34,11 +34,12 @@ def delete_last_line():
 
 # list where players are added
 players=[]
+bankrupt_players = []
 
-
+win = False
 
 # retrieving all players information and assigning them a color
-while True:
+while not win:
   try:
     numOfPlayers=int(input(Fore.WHITE+"\nHow many players will be playing Dymonopoly today?: "))
     if numOfPlayers>=2 and numOfPlayers<=8:
@@ -93,23 +94,26 @@ bPos=[0,0,0,0,0,0,0,0]
 own=[[],[],[],[],[],[],[],[]]
 
 # balance of each player
-money=[1500,1500,1500,1500,1500,1500,1500,1500]
+money=[1500,0,1500,1500,1500,1500,1500,1500]
+
 
 iterations = 0
 # starting dice roll and sending current player to their rolled position
-while True:
+while not win:
   jail = False
   iterations += 1
 
   if iterations % numOfPlayers == 0:
     print("\nPrice Update: \n")
     print(Fore.GREEN+"Increase in property value for the following: \n")
-    tree.increase_visited(last_visited)
+    tree.increase_visited()
     print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
     tree.decrease_visited()
 
   for x in range(numOfPlayers):
-    # print("player num",x)
+    if x in bankrupt_players:
+      continue
+    
     # os.system("clear")
     input(Fore.WHITE+"\nClick <ENTER> to begin your go... ")
     if jail == False:
@@ -135,10 +139,7 @@ while True:
     # print("\nPlayer" + ":",players[x])
     # print("Balance: $",money[x])
     # print("You landed on",board[bPos[x]][0])
-    if board[bPos[x]][1] not in ["cc", "no", "ch"]:
-      last_visited = board[bPos[x]][0]
-    else:
-       last_visited = "GO"
+    
     jail_time = 0
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
     if board[bPos[x]][0]=="Income Tax":
@@ -237,7 +238,7 @@ while True:
         print("You discovered BitCoin mining! You mined 0.000023 BTC which is worth about $100!\nYour new balance is $" + str(money[x]))
 
       if ch_spin == 5:
-        ch_lottery = random.randint(1,1000) - 50
+        ch_lottery = random.randint(1,1000) 
         if ch_lottery < 1:
           lottery = 0
 
@@ -359,6 +360,20 @@ while True:
         break
           
         
+    if money[x] < 1:
+      bankrupt_players.append(x)
+      print()
+      print(str(players[x]) + Fore.RED +  " has gone bankrupt! You lose.")
+      if numOfPlayers - len(bankrupt_players) == 1:
+        find = [player for player in range(numOfPlayers) if player not in bankrupt_players]
+        find = find[0]
+        print()
+        print(str(players[find]) + Fore.MAGENTA+ " Has won the game! Congratulations!!!")
+        print()
+        print(Fore.WHITE+"Thank you for playing Dymonopoly!")
+        print()
+        win = True
+  # checks for if a players balance is less than $1. If it is, then the other player is awarded the win
 
       # continuing a turn after an action
       # else:
@@ -367,12 +382,5 @@ while True:
       # input("<ENTER> to continue...")
       # if os.system('clear'):
       #   break
+          
 
-  # checks for if a players balance is less than $1. If it is, then the other player is awarded the win
-      if money[x] < 1:
-        print(str(players[x]) + "has gone bankrupt! You lose.")
-        if numOfPlayers < 3:
-          if money[p1] < 1:
-            print(str(p2) + " is the winner!")
-          else:
-            print(str(p1) + " is the winner!")

@@ -99,25 +99,22 @@ class SplayTree:
             return True
         return False
     
-    def increase_visited(self, key):
-        node = self.search(key)
-        if node.value in ["cc", "no", "ch", None]:
-            return
-        else:
-            node.value = int(int(node.value)*1.5)
-            print(node.key, node.value)
-            x = node.left
-            if x.value in ["cc", "no", "ch"], None:
-                return
-            else:
-                x.value = int(int(x.value)*1.5)
-                print(x.key , x.value)
-            y = node.right
-            if y.value in ["cc", "no", "ch", None]:
-                return
-            else:
-                y.value =int(int(y.value)*1.5)
-                print(y.key, y.value)
+    def get_most_searched(self):
+        most_searched = []
+        if self.root and self.root.value not in ["cc", "no", "ch", None]:
+            most_searched.append(self.root.key)
+            if self.root.left and self.root.left.value not in ["cc", "no", "ch", None]:
+                most_searched.append(self.root.left.key)
+            if self.root.right and self.root.right.value not in ["cc", "no", "ch", None]:
+                most_searched.append(self.root.right.key)
+        return most_searched
+    
+    def increase_visited(self):
+        nodelst = tree.get_most_searched()
+        for node in nodelst:
+            x = self.search(node)
+            x.value = int(x.value)*1.5
+            print(x.key, x.value)
 
     def decrease_visited(self):
         nodelst = tree.get_least_searched()
