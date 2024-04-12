@@ -182,7 +182,8 @@ while not win:
     if board[bPos[x]][0] not in available: 
       if board[bPos[x]][0] not in own[x]:
         rent_owed = tree.search(board[bPos[x]][0]).value 
-        money[x] = money[x] - rent_owed
+        if rent_owed not in ["cc", "no", "ch", None]:
+          money[x] = money[x] - rent_owed
         for i in range(len(own)):
           if board[bPos[x]][0] in own[i]:
             money[i] = money[i] + rent_owed
