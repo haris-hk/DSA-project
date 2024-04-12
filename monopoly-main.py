@@ -141,7 +141,7 @@ while True:
        last_visited = "GO"
     jail_time = 0
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
-    if board[bPos[x]][0]=="Inome Tax":
+    if board[bPos[x]][0]=="Income Tax":
       print("\nPlayer" + ":",players[x], "landed on",board[bPos[x]][0])
       money[x]=money[x]-200
       print("\nYou paid $200 in income tax.\nYour new balance is $" + str(money[x]))
@@ -226,7 +226,7 @@ while True:
 
       if ch_spin == 2:
         money[x]=money[x] - 150
-        print("\nYou lost $150 gambling in Vegas. This better be a one time thing.../nYour new balance is $" + str(money[x]))
+        print("\nYou lost $150 gambling in Vegas. This better be a one time thing...\nYour new balance is $" + str(money[x]))
 
       if ch_spin == 3:
         money[x] = money[x] - 100
