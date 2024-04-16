@@ -97,14 +97,18 @@ own=[[],[],[],[],[],[],[],[]]
 money=[1500,1500,1500,1500,1500,1500,1500,1500]
 
 
-tree = SplayTree()
-for key, value in board:
-    tree.insert(key, value)
+iterations = 0
 # starting dice roll and sending current player to their rolled position
 while not win:
-  iterations = 0
   jail = False
+  # iterations += 1
 
+  if iterations % numOfPlayers == 0 and iterations != 0 :
+    print("\nPrice Update: \n")
+    print(Fore.GREEN+"Increase in property value for the following: \n")
+    tree.increase_visited()
+    print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
+    tree.decrease_visited()
   for x in range(numOfPlayers):
     if x in bankrupt_players:
       continue
@@ -118,14 +122,7 @@ while not win:
     if bPos[x] >= 39:
       bPos[x]=bPos[x]-39
     # os.system("clear")
-    iterations += 1
 
-    if iterations % numOfPlayers == 0:
-      print("\nPrice Update: \n")
-      print(Fore.GREEN+"Increase in property value for the following: \n")
-      tree.increase_visited()
-      print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
-      tree.decrease_visited()
       
     # rolling dice animation text
     rolling("Rolling Dice...")
@@ -257,7 +254,7 @@ while not win:
       # player inputs what they want to do during their turn
      
     choice = 0
-      
+    iterations += 1  
         
     while choice != 4:   
       print("\nPlayer" + ":",players[x])
