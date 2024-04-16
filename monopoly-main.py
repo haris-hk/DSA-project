@@ -70,7 +70,7 @@ while not win:
 
     # error message for less than 2 players
     elif numOfPlayers < 2:
-      print(Fore.RED+"Error occured. You must have atlest two players.")
+      print(Fore.RED+"Error occured. You must have atleast two players.")
 
     # error message for more than 8 players
     else:
@@ -97,18 +97,10 @@ own=[[],[],[],[],[],[],[],[]]
 money=[1500,1500,1500,1500,1500,1500,1500,1500]
 
 
-iterations = 0
 # starting dice roll and sending current player to their rolled position
 while not win:
+  iterations = 0
   jail = False
-  iterations += 1
-
-  if iterations % numOfPlayers == 0:
-    print("\nPrice Update: \n")
-    print(Fore.GREEN+"Increase in property value for the following: \n")
-    tree.increase_visited()
-    print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
-    tree.decrease_visited()
 
   for x in range(numOfPlayers):
     if x in bankrupt_players:
@@ -123,6 +115,14 @@ while not win:
     if bPos[x] >= 39:
       bPos[x]=bPos[x]-39
     # os.system("clear")
+    iterations += 1
+
+    if iterations % numOfPlayers == 0:
+      print("\nPrice Update: \n")
+      print(Fore.GREEN+"Increase in property value for the following: \n")
+      tree.increase_visited()
+      print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
+      tree.decrease_visited()
       
     # rolling dice animation text
     rolling("Rolling Dice...")

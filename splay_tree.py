@@ -92,6 +92,7 @@ class SplayTree:
                 self.splay(x)
                 return x
         return None
+    
     def update_value(self, key, new_value):
         node = self.search(key)
         if node:
@@ -114,14 +115,14 @@ class SplayTree:
         for node in nodelst:
             x = self.search(node)
             x.value = int(x.value)*1.5
-            print(x.key, x.value)
+            print(x.key,":", x.value)
 
     def decrease_visited(self):
         nodelst = tree.get_least_searched()
         for node in nodelst:
             x = self.search(node)
             x.value = int(x.value)*0.85
-            print(x.key, x.value)
+            print(x.key,":", x.value)
             
 
     def in_order_traversal(self, node, leaf_nodes):
