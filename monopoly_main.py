@@ -104,6 +104,7 @@ while not win:
   # iterations += 1
 
   if iterations % numOfPlayers == 0 and iterations != 0 :
+    print()
     print(Fore.WHITE+"\nPrice Update: \n")
     print(Fore.GREEN+"Increase in property value for the following: \n")
     tree.increase_visited()
@@ -273,6 +274,7 @@ while not win:
                 print("\nwhat would you like to do?\n(1)Buy for $",tree.search(board[bPos[x]][0]).value,"\n(2)Sell for $\n(3)Check properties\n(4)End turn")
       while True:
         try:
+          print("\nClick <ENTER> to select... ")
           wyd=int(input(">> "))
           break
         # if input is invalid
