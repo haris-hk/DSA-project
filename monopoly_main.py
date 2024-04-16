@@ -104,7 +104,7 @@ while not win:
   # iterations += 1
 
   if iterations % numOfPlayers == 0 and iterations != 0 :
-    print("\nPrice Update: \n")
+    print(Fore.WHITE+"\nPrice Update: \n")
     print(Fore.GREEN+"Increase in property value for the following: \n")
     tree.increase_visited()
     print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
