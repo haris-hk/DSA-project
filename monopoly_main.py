@@ -301,8 +301,7 @@ while not win:
           # message for if players balance is less than the property cost
           else:
             print("\nUh oh! You can't afford this!")
-
-      # mortgage option for a property (not yet operational)
+     
       elif wyd==2:
       # implementing Sell for $ option
         if len(own[x]) == 0:
