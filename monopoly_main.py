@@ -260,7 +260,7 @@ while not win:
     while choice != 4:   
       print("\nPlayer" + ":",players[x])
       print("Balance: $",money[x])
-      print("You landed on",tree.search(board[bPos[x]][0]).key)
+      print("You landed on",tree.search(bPos[x]).key)
       time.sleep(1)
       if board[bPos[x]][1]=="no":
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")
