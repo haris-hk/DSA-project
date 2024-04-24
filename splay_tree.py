@@ -13,6 +13,9 @@ class Node:
 class SplayTree:
     def __init__(self):
         self.root = None
+    
+    def get_root(self):
+        return self.root
 
     def right_rotate(self, x):
         y = x.left
@@ -83,6 +86,12 @@ class SplayTree:
             y.right = node
         self.splay(node)
 
+    def get_most_searched(self):
+        most_searched = []
+        if self.root and self.root.value not in ["cc", "no", "ch", None]:
+            most_searched.append(self.root.boardpos)
+        return most_searched
+    
     def search(self, bpos):
         x = self.root
         y = int(x.boardpos)
@@ -94,7 +103,8 @@ class SplayTree:
                 x = x.right
             else:
                 self.splay(x)
-                
+                if x.value not in ["cc", "no", "ch", None]:
+                    tree.increase_visited()
                 return x
         return None
     
@@ -105,22 +115,24 @@ class SplayTree:
             return True
         return False
     
-    def get_most_searched(self):
-        most_searched = []
-        if self.root and self.root.value not in ["cc", "no", "ch", None]:
-            most_searched.append(self.root.boardpos)
-            if self.root.left and self.root.left.value not in ["cc", "no", "ch", None]:
-                most_searched.append(self.root.left.boardpos)
-            if self.root.right and self.root.right.value not in ["cc", "no", "ch", None]:
-                most_searched.append(self.root.right.boardpos)
-        return most_searched
+    def pre_order_traversal_search(self, node, key):
+        x = node
+        if key == x.key:
+            return x
+        self.pre_order_traversal_search(x.left, key)
+        self.pre_order_traversal_search(x.right, key)   
+        return None
+
+        
+        
+        
     
     def increase_visited(self):
-        nodelst = tree.get_most_searched()
-        for node in nodelst:
-            x = self.search(node)
+        # nodelst = tree.get_most_searched()
+        # for node in nodelst:
+            x = self.root
             x.value = int(x.value)*1.5
-            print(x.key,":", x.value)
+            
 
     def decrease_visited(self):
         nodelst = tree.get_least_searched()
@@ -150,7 +162,7 @@ monopoly_properties = [["GO","no"],["Shoreline Pass",60],["Community Chest","cc"
 
 tree = SplayTree()
 for x in range(len( monopoly_properties)):
-    print(monopoly_properties[x][0])
+    
     if monopoly_properties[x][0] != None:
         tree.insert(monopoly_properties[x][0], monopoly_properties[x][1], x)
     

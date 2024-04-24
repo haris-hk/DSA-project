@@ -35,6 +35,9 @@ def delete_last_line():
 # list where players are added
 players=[]
 bankrupt_players = []
+jail = [-1,-1,-1,-1,-1,-1,-1,-1]
+
+increased_properties = []
 
 win = False
 
@@ -100,23 +103,26 @@ money=[1500,1500,1500,1500,1500,1500,1500,1500]
 iterations = 0
 # starting dice roll and sending current player to their rolled position
 while not win:
-  jail = False
+  
   # iterations += 1
 
   if iterations % numOfPlayers == 0 and iterations != 0 :
     print()
     print(Fore.WHITE+"\nPrice Update: \n")
     print(Fore.GREEN+"Increase in property value for the following: \n")
-    tree.increase_visited()
+    for properties in increased_properties:
+      print(properties.key,":", properties.value)
     print(Fore.LIGHTRED_EX+"\nDecrease in property value for the following: \n")
     tree.decrease_visited()
+
+  increased_properties = []
   for x in range(numOfPlayers):
     if x in bankrupt_players:
       continue
     
     # os.system("clear")
     input(Fore.WHITE+"\nClick <ENTER> to begin your go... ")
-    if jail == False:
+    if jail[x] == -1:
       bPos[x]=random.randint(1,6)+random.randint(1,6)+bPos[x]
     else:
       bPos[x] = bPos[x]
@@ -136,12 +142,22 @@ while not win:
     time.sleep(0)
     delete_last_line()
 
+
+    if board[bPos[x]][1] not in ["cc", "no", "ch", None]:
+      current_property = tree.search(bPos[x])
+      if current_property not in increased_properties:
+        increased_properties.append(current_property)
+      print("working")
+    else:
+      print("testing")
+      current_property = tree.search(bPos[x])
+
     # header stats (player , balance, board position)
     # print("\nPlayer" + ":",players[x])
     # print("Balance: $",money[x])
     # print("You landed on",board[bPos[x]][0])
     
-    jail_time = 0
+    
       # if player lands on a space with board position index[1] == "no" (go to jail, free parking, etc)
     if board[bPos[x]][0]=="Income Tax":
       print("\nPlayer" + ":",players[x], "landed on",board[bPos[x]][0])
@@ -156,33 +172,34 @@ while not win:
       money[x]=money[x]+200
       print("\nYour new balance is $" + str(money[x]))
     elif board[bPos[x]][0]=="Go To Jail" and "Get out of Jail Free Card" not in own[x]:
-      jail = True
+      if jail[x] < 0:
+        jail[x] = 0
       print("\nYou have been sent to jail!")
-      while jail_time < 4:
-        print("\nYou are in jail for " + str(3 - jail_time) + " turns.")
+      while jail[x] < 3:
+        print("\nYou are in jail for " + str(3 - jail[x]) + " turns.")
         print("\nYou can either pay $100 to get out of jail or wait for your turn.")
         print("\nWhat would you like to do?\n(1)Pay $100\n(2)Wait")
         jail_choice = int(input(">> "))
         if jail_choice == 1:
           money[x] = money[x] - 100
           print("\nYou paid $100 to get out of jail.\nYour new balance is $" + str(money[x]))
-          jail = False
+          jail[x] = -1
           break
-        elif jail_time == 3:
+        elif jail[x] == 3:
           print("You have served your time in jail. You are free to go.")
-          jail = False
+          jail[x] = -1 
           break
-        elif jail_choice == 2 and jail_time < 2:
-          jail_time += 1
+        elif jail_choice == 2 and jail[x] < 3:
+          jail[x] += 1
           print("\nYou are still in jail.")
-          jail = True
+          
           break
 
 
       # checks to see if the property the player landed on is available, and then to see if that player owns it. If they don't rent is subtracted fromt that players balance.
     if board[bPos[x]][0] not in available: 
       if board[bPos[x]][0] not in own[x]:
-        rent_owed = tree.search(board[bPos[x]][0]).value 
+        rent_owed = (current_property.value/1.5) 
         if rent_owed not in ["cc", "no", "ch", None]:
           money[x] = money[x] - rent_owed
         for i in range(len(own)):
@@ -260,7 +277,7 @@ while not win:
     while choice != 4:   
       print("\nPlayer" + ":",players[x])
       print("Balance: $",money[x])
-      print("You landed on",tree.search(bPos[x]).key)
+      print("You landed on", current_property.key)
       time.sleep(1)
       if board[bPos[x]][1]=="no":
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")
@@ -271,7 +288,7 @@ while not win:
       elif board[bPos[x]][0] not in available:
                 print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Sell for $\n(3)Check properties\n(4)End turn")         
       else :
-                print("\nwhat would you like to do?\n(1)Buy for $",tree.search(board[bPos[x]][0]).value,"\n(2)Sell for $\n(3)Check properties\n(4)End turn")
+                print("\nwhat would you like to do?\n(1)Buy for $",current_property.value/1.5,"\n(2)Sell for $\n(3)Check properties\n(4)End turn")
       while True:
         try:
           print("\nClick <ENTER> to select... ")
@@ -293,8 +310,8 @@ while not win:
 
         # if the property is unowned and less than your balance, player can purchase the property
         else:
-          if money[x] >= tree.search(board[bPos[x]][0]).value:
-            money[x]=money[x]-tree.search(board[bPos[x]][0]).value
+          if money[x] >= current_property.value:
+            money[x]=money[x]- current_property.value/1.5
             own[x].append(board[bPos[x]][0])
             available.remove(board[bPos[x]][0])
             print("\nCongratulations! You bought",board[bPos[x]][0])
@@ -311,18 +328,20 @@ while not win:
           print("\nKindly select the number of the property you would like to sell? ")
           for i in range (len(own[x])):
             if own[x][i] != "Get out of Jail Free Card":
-              print(str([i+1]) , str(own[x][i]), str(tree.search(own[x][i]).value)) #TODO: Traverse to find value instead of searching
+
+              if own[x][i] not in ["cc", "no", "ch", None]:
+                print(str([i+1]) , str(own[x][i]), str((tree.pre_order_traversal_search(tree.get_root() ,own[x][i]).value/1.5))) #TODO: Traverse to find value instead of searching
             else:
               continue
           if "Get out of Jail Free Card" in own[x]:
-            print(str([len(own[x])]), "Get out of Jail Free Card" , str(200))
+            print(str([len(own[x])]+1), "Get out of Jail Free Card" , str(200))
           
           print(str([-1]), "Exit")
           property_index = int(input(">> "))
 
           if property_index == -1:
             continue
-          elif property_index == len(own[x]):
+          elif property_index == len(own[x])+1:
             money[x] = money[x] + 200
             own[x].remove("Get out of Jail Free Card")
             print("You have successfully sold Get out of Jail Free Card for $200")
@@ -340,11 +359,11 @@ while not win:
         # Selling the property and adding the money to the players balance
           for j in range(len(board)):
             if property_to_be_sold == board[j][0]:
-              money[x] = money[x] + board[j][1]
+              money[x] = money[x] +  tree.pre_order_traversal_search(tree.get_root() ,board[j][0]).value/1.5
               own[x].remove(property_to_be_sold)
               available.append(property_to_be_sold)
               # printing a statement to confirm the sale of the property
-              print("You have successfully sold", property_to_be_sold, "for $", board[j][1])
+              print("You have successfully sold", property_to_be_sold, "for $", tree.pre_order_traversal_search(tree.get_root(),board[j][0]).value/1.5)
               break
              
         
