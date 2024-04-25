@@ -29,8 +29,19 @@ def delete_last_line():
   sys.stdout.write('\x1b[1A')
   sys.stdout.write('\x1b[2K')
 
+def test_cases(currentpos, option):
+  if option == 1:
+    currentpos = 6
+    return currentpos
+  elif option == 2:
+    currentpos = 30
+    return currentpos
+  if option == 3:
+    currentpos = random.randint(1,6)+random.randint(1,6) + currentpos
+    return currentpos
+
 # title + credit animation 
-# typewrite("Welcome to " + Fore.LIGHTGREEN_EX+"Monopoly\n" + Fore.WHITE+"This game was created by " + Fore.BLUE+"haris-hk\n\n")
+# typewrite("Welcome to " + Fore.LIGHTGREEN_EX+"DyMonopoly\n")
 
 # list where players are added
 players=[]
@@ -123,7 +134,16 @@ while not win:
     # os.system("clear")
     input(Fore.WHITE+"\nClick <ENTER> to begin your go... ")
     if jail[x] == -1:
-      bPos[x]=random.randint(1,6)+random.randint(1,6)+bPos[x]
+      while True:
+        print()
+        test_case_choice = int(input("(1) Landing on a specific property (for rent/property price changes) \n(2) Going to jail \n(3) Normal Game mode \n\nEnter test case choice: "))
+        print()
+        if test_case_choice in [1,2,3]:
+          break
+        else:
+          print("Invalid input. Try again.")
+      bPos[x]= test_cases(bPos[x], test_case_choice)
+      # random.randint(1,6)+random.randint(1,6)
     else:
       bPos[x] = bPos[x]
     if bPos[x] >= 39:
@@ -147,9 +167,7 @@ while not win:
       current_property = tree.search(bPos[x])
       if current_property not in increased_properties:
         increased_properties.append(current_property)
-      print("working")
     else:
-      print("testing")
       current_property = tree.search(bPos[x])
 
     # header stats (player , balance, board position)
