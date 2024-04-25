@@ -9,13 +9,19 @@ class Node:
         self.right = None
         self.parent = None
         self.boardpos = int(bpos)
+    # Time Complexity: O(1)
+    # Space Complexity: O(1)
 
 class SplayTree:
     def __init__(self):
         self.root = None
-    
+    # Time Complexity: O(1)
+    # Space Complexity: O(1)
+
     def get_root(self):
         return self.root
+    # Time Complexity: O(1)
+    # Space Complexity: O(1)
 
     def right_rotate(self, x):
         y = x.left
@@ -31,6 +37,8 @@ class SplayTree:
             x.parent.left = y
         y.right = x
         x.parent = y
+    # Time Complexity: O(1)
+    # Space Complexity: O(1)
 
     def left_rotate(self, x):
         y = x.right
@@ -46,8 +54,14 @@ class SplayTree:
             x.parent.right = y
         y.left = x
         x.parent = y
+    # Time Complexity: O(1)
+    # Space Complexity: O(1)
+
 
     def splay(self, x):
+        # Time Complexity: O(log n) in the average case and O(n) in the worst case
+        # Space Complexity: O(1)
+
         while x.parent:
             if not x.parent.parent:
                 if x == x.parent.left:
@@ -68,6 +82,8 @@ class SplayTree:
                 self.left_rotate(x.parent)
 
     def insert(self, key, value, boardpos):
+        # Time Complexity: O(log n) in the average case and O(n) in the worst case
+        # Space Complexity: O(1)
         node = Node(key, value, boardpos)
         y = None
         x = self.root
@@ -88,6 +104,8 @@ class SplayTree:
 
     
     def search(self, bpos):
+        # Time Complexity: O(log n) in the average case and O(n) in the worst case
+        # Space Complexity: O(1)
         x = self.root
         y = int(x.boardpos)
         while x:
@@ -105,6 +123,9 @@ class SplayTree:
     
     
     def pre_order_traversal_search(self, node, key):
+        # Time Complexity: O(n) because it traverses all nodes in the tree
+        # Space Complexity: O(n) due to the recursion stack in the worst case
+
         x = node
         if key == x.key:
             return x
@@ -114,13 +135,15 @@ class SplayTree:
 
  
     def increase_visited(self):
-        # nodelst = tree.get_most_searched()
-        # for node in nodelst:
+        # Time Complexity: O(1) as it only modifies the root
+        # Space Complexity: O(1)
             x = self.root
             x.value = int(x.value)*1.5
             
 
     def decrease_visited(self):
+        # Time Complexity: O(n log n) in the average case and O(n^2) in the worst case
+        # Space Complexity: O(1)
         nodelst = tree.get_least_searched()
         for node in nodelst:
             x = self.search(node)
@@ -129,6 +152,8 @@ class SplayTree:
             
 
     def in_order_traversal(self, node, leaf_nodes):
+        # Time Complexity: O(n) because it traverses all nodes in the tree
+        # Space Complexity: O(n) due to the recursion stack in the worst case
         if node:
             self.in_order_traversal(node.left, leaf_nodes)
             if node.left is None and node.right is None:
@@ -136,6 +161,8 @@ class SplayTree:
             self.in_order_traversal(node.right, leaf_nodes)
 
     def get_least_searched(self):
+        # Time Complexity: O(n) because it traverses all nodes in the tree
+        # Space Complexity: O(n) due to the recursion stack and the list of leaf nodes
         leaf_nodes = []
         self.in_order_traversal(self.root, leaf_nodes)
         return [node.boardpos for node in leaf_nodes if node.value not in ["cc", "no", "ch", None]]
