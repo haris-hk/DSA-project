@@ -99,7 +99,7 @@ board=[["GO","no"],["Shoreline Pass",60],["Community Chest","cc"],["Trailhawk La
 
 
 # showing what is available
-available=["GO","Shoreline Pass","Community Chest","Trailhawk Lane","Palm Springs","Income Tax","Queens Crown Station","Creighton Plaza","CHANCE","Tuscan Road","Dreamville Lane","Just Visiting","Grand View Mall","Electric Company","Pismo Court","Swanson Avenue","Kanto Station","Morales Street","COMMUNITY CHEST","Palace Vinyard","Cynthia Street","Free Parking","Strand","CHANCE","Trojan Road","Tralfamadore Square","Spain Street Station","John London Square","Curry Street","Water Works","Tilted Towers","Go To Jail","Berkeley Lane","Lombard Street","Telegraph Avenue Station","Rocky Reels", "CHANCE"]
+available=["GO","Shoreline Pass","Community Chest","Trailhawk Lane","Palm Springs","Income Tax","Queens Crown Station","Creighton Plaza","CHANCE","Tuscan Road","Dreamville Lane","Just Visiting","Grand View Mall","Electric Company","Pismo Court","Swanson Avenue","Kanto Station","Morales Street","COMMUNITY CHEST","Palace Vinyard","Cynthia Street","Free Parking","Strand","CHANCE","Trojan Road","Tralfamadore Square","Spain Street Station","John London Square","Curry Street","Water Works","Tilted Towers","Go To Jail","Berkeley Lane","Lombard Street","Telegraph Avenue Station","Rocky Reels", "CHANCE", "Super tax"]
 
 # each players starting board position 
 bPos=[0,0,0,0,0,0,0,0]
@@ -183,7 +183,7 @@ while not win:
       print("\nYou paid $200 in income tax.\nYour new balance is $" + str(money[x]))
     elif board[bPos[x]][0]=="Super Tax":
       print("\nPlayer" + ":",players[x], "landed on",board[bPos[x]][0])
-      money[x]=money[x]-400 
+      money[x]=money[x]- int(400 )
       print("\nYou paid $400 in Super tax.\nYour new balance is $" + str(money[x]))
     elif board[bPos[x]][0]=="GO":
       print("You passed GO! Collect $200!")
