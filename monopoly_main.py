@@ -352,7 +352,7 @@ while not win:
             else:
               continue
           if "Get out of Jail Free Card" in own[x]:
-            print(str([len(own[x])]+1), "Get out of Jail Free Card" , str(200))
+            print(str(len(own[x])+1), "Get out of Jail Free Card" , str(200))
           
           print(str([-1]), "Exit")
           property_index = int(input(">> "))

@@ -86,11 +86,6 @@ class SplayTree:
             y.right = node
         self.splay(node)
 
-    def get_most_searched(self):
-        most_searched = []
-        if self.root and self.root.value not in ["cc", "no", "ch", None]:
-            most_searched.append(self.root.boardpos)
-        return most_searched
     
     def search(self, bpos):
         x = self.root
@@ -108,12 +103,6 @@ class SplayTree:
                 return x
         return None
     
-    def update_value(self, key, new_value):
-        node = self.search(key)
-        if node:
-            node.value = new_value
-            return True
-        return False
     
     def pre_order_traversal_search(self, node, key):
         x = node
@@ -123,10 +112,7 @@ class SplayTree:
         self.pre_order_traversal_search(x.right, key)   
         return None
 
-        
-        
-        
-    
+ 
     def increase_visited(self):
         # nodelst = tree.get_most_searched()
         # for node in nodelst:
