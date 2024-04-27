@@ -193,7 +193,7 @@ while not win:
       if jail[x] < 0:
         jail[x] = 0
       print("\nYou have been sent to jail!")
-      while jail[x] < 3:
+      while jail[x] < 4:
         print("\nYou are in jail for " + str(3 - jail[x]) + " turns.")
         print("\nYou can either pay $100 to get out of jail or wait for your turn.")
         print("\nWhat would you like to do?\n(1)Pay $100\n(2)Wait")
