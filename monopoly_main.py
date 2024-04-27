@@ -135,20 +135,23 @@ while not win:
     input(Fore.WHITE+"\nClick <ENTER> to begin your go... ")
     if jail[x] == -1:
       while True:
-        print()
-        test_case_choice = int(input("(1) Landing on a specific property (for rent/property price changes) \n(2) Going to jail \n(3) Normal Game mode \n\nEnter test case choice: "))
-        print()
-        if test_case_choice in [1,2,3]:
-          break
-        else:
-          print("Invalid input. Try again.")
+        try:
+          print()
+          test_case_choice = int(input("(1) Landing on a specific property (for rent/property price changes) \n(2) Going to jail \n(3) Normal Game mode \n\nEnter test case choice: "))
+          print()
+          if test_case_choice in [1,2,3]:
+            break
+          else:
+            print("Invalid input. Try again!")
+        except:
+          print()
+          print("Invalid input. Try again!")
+          
       bPos[x]= test_cases(bPos[x], test_case_choice)
-      # random.randint(1,6)+random.randint(1,6)
     else:
       bPos[x] = bPos[x]
     if bPos[x] >= 39:
       bPos[x]=bPos[x]-39
-    # os.system("clear")
 
       
     # rolling dice animation text
@@ -282,7 +285,6 @@ while not win:
         money[x] = money[x] + ch_lottery
         print("\nYou just won $" + str(ch_lottery) + " playing blackjack. This is improbable, I can't believe it..\nYour new balance is $" + str(money[x]))
         
-      # print("\nwhat would you like to do?\n(1)Buying is unavailable here!\n(2)Morgage(CURRENTLY UNAVAILABLE)\n(3)Check properties\n(4)End turn")
 
     # landing on an unowned property 
     else:
