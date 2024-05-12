@@ -41,7 +41,8 @@ def test_cases(currentpos, option):
     return currentpos
 
 # title + credit animation 
-# typewrite("Welcome to " + Fore.LIGHTGREEN_EX+"DyMonopoly\n")
+print()
+typewrite("Welcome to " + Fore.LIGHTGREEN_EX+"DyMonopoly\n")
 
 # list where players are added
 players=[]
