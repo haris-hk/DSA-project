@@ -12,9 +12,6 @@ the the game ends for a two player game.
 - Players who own properties will receive rent when another player lands on it. 
 
 
-changes to be made:
-
-- Implementation of Splay Treee
 
 
 
